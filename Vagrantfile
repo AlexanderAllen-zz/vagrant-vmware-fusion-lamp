@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "centos_lamp"
+  config.vm.box = "vagrant-centos-x64-6.5"
   
   config.ssh.username="root"
 
@@ -58,9 +58,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider :vmware_fusion do |v, override|
 
-      v.gui = true
-
-      v.vmx["memsize"] = "1024"
+      v.vmx["memsize"] = "256"
 
       v.vmx["ethernet0.present"] = "TRUE"
       v.vmx["ethernet0.connectionType"] = "nat"
@@ -76,7 +74,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #v.vmx["ethernet0.addressType"] = "static"
       #v.vmx["ethernet0.address"] = "00:0c:29:ac:f3:50"
       
-      v.vmx["ethernet0.displayName"] = "CentOS 6.5 LAMP"
+      v.vmx["displayName"] = "CentOS 6.5 LAMP"
       v.vmx["annotation"] = "CentOS minimal x86_64 v6.5 LAMP vagrant box by rallen"
   end  
   
