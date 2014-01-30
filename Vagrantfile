@@ -11,6 +11,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "centos_lamp"
+  
+  config.ssh.username="root"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -40,14 +42,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-  config.vm.synced_folder "~/Sites", "~/Sites"
+  #config.vm.synced_folder "~/Sites", "~/Sites"
   
   #
   # Enable the network interface by default without using Network Manager.
   # http://wiki.centos.org/FAQ/CentOS6#head-b67e85d98f0e9f1b599358105c551632c6ff7c90
   #
-  config.vm.provision :shell, :inline => "cd /etc/sysconfig/network-scripts/; \
-  sed -i -e 's@^ONBOOT="no@ONBOOT="yes@' ifcfg-eth0"    
+  #config.vm.provision :shell, :inline => "cd /etc/sysconfig/network-scripts/; \
+  #sed -i -e 's@^ONBOOT="no@ONBOOT="yes@' ifcfg-eth0"    
   
   # Run yum update and setup network configuration before running
   # provider.
