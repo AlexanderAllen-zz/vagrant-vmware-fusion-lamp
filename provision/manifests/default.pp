@@ -1,2 +1,0 @@
-import "lamp"
-include lamp
