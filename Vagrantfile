@@ -53,30 +53,29 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
   # Run yum update and setup network configuration before running
   # provider.
-  config.vm.provision :shell, :inline => "yum update"
+  #config.vm.provision :shell, :inline => "yum update"
   
 
-  config.vm.provider :vmware_fusion do |v, override|
+  #config.vm.provider :vmware_fusion do |v, override|
 
-      v.vmx["memsize"] = "256"
+      #v.vmx["memsize"] = "1024"
 
-      v.vmx["ethernet0.present"] = "TRUE"
-      v.vmx["ethernet0.connectionType"] = "nat"
-      v.vmx["ethernet0.virtualDev"] = "e1000"
-      v.vmx["ethernet0.wakeOnPcktRcv"] = "TRUE"
-      v.vmx["ethernet0.linkStatePropagation.enable"] = "TRUE"
+      #v.vmx["ethernet0.present"] = "TRUE"
+      #v.vmx["ethernet0.connectionType"] = "nat"
+      #v.vmx["ethernet0.virtualDev"] = "e1000"
+      #v.vmx["ethernet0.linkStatePropagation.enable"] = "TRUE"
 
-      v.vmx["ethernet0.addressType"] = "static"
-      v.vmx["ethernet0.generatedAddress"] = nil
-      v.vmx["ethernet0.startConnected"] = "TRUE"      
+      #v.vmx["ethernet0.addressType"] = "static"
+      #v.vmx["ethernet0.generatedAddress"] = nil
+      #v.vmx["ethernet0.startConnected"] = "TRUE"      
       
       #v.vmx["ethernet0.generatedAddress"] = nil
       #v.vmx["ethernet0.addressType"] = "static"
       #v.vmx["ethernet0.address"] = "00:0c:29:ac:f3:50"
       
-      v.vmx["displayName"] = "CentOS 6.5 LAMP"
-      v.vmx["annotation"] = "CentOS minimal x86_64 v6.5 LAMP vagrant box by rallen"
-  end  
+     # v.vmx["displayName"] = "CentOS 6.5 LAMP"
+      #v.vmx["annotation"] = "CentOS minimal x86_64 v6.5 LAMP vagrant box by rallen"
+  #end  
   
 
   # Provider-specific configuration so you can fine-tune various
