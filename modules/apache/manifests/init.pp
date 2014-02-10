@@ -67,29 +67,26 @@ class apache {
 	}
 	
 	# Ensure vhosts.d exists.
-	file { '/etc/httpd/conf.d/vhosts.d':
+	file { '/etc/httpd/vhosts.d':
 		ensure => 'directory',
 		owner => 'root',
-		group => 'root'
+		group => 'root',
+		require => Package['httpd']
 	}		
 	
-	file { '/etc/httpd/conf.d/vhosts.d/default.conf':
+	file { '/etc/httpd/vhosts.d/default.conf':
 		source => 'puppet:///modules/apache/default.conf',
 		owner => 'root',
-		group => 'root'
-	}	
-
-	# Install PHP Packages and restatart apache afterwards.
-	# TODO Check what packages we currently have installed.
-
-	#service { "httpd": 
-#		require => Package["httpd"], 
-#		subscribe => [
-#			File['/etc/httpd/sites-available/default']
-			#Package[
-			#]
-#		]
-#	}
+		group => 'root',
+		require => Package['httpd']
+	}
+	
+	# Ensure httpd is running.
+	service {
+		"httpd":
+		ensure => running,
+		require => Package["httpd"];
+	}
 	
 	
 }
