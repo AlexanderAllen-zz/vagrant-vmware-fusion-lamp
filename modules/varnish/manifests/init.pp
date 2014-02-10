@@ -31,7 +31,7 @@ class varnish {
 	
 	# Set Varnish to listen on port 8080.
 	exec { 'Update /etc/sysconfig/varnish': 
-		command => "sed -i 's/VARNISH_LISTEN_PORT=6081/VARNISH_LISTEN_PORT=8080/g' /etc/sysconfig/varnish",
+		command => "sed -i 's/VARNISH_LISTEN_PORT=6081/VARNISH_LISTEN_PORT=80/g' /etc/sysconfig/varnish",
 		require => Package["varnish"]	
 	}
 	
