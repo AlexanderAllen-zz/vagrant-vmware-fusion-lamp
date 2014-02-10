@@ -20,13 +20,6 @@ class varnish {
 		command => 'chkconfig varnish on',
 		creates => '/tmp/vagrant-puppet-semaphore/varnish',
 		require => Package["varnish"]	
-	}	
-	
-	# Ensure Varnish is running.
-	service {
-		"varnish":
-		ensure => running,
-		require => Package["varnish"];
 	}
 	
 	# Set Varnish to listen on port 8080.
@@ -42,9 +35,15 @@ class varnish {
 	}
 	
 	exec { 'Set varnish semaphore': 
-		command => 'touch /tmp/vagrant-puppet-varnish-semaphore', 
+		command => 'touch /tmp/vagrant-puppet-semaphore/varnish', 
 		require => Package["varnish"],
 		creates => '/tmp/vagrant-puppet-semaphore/varnish',
-	}	
+	}
 	
+	# Ensure Varnish is running.
+	service {
+		"varnish":
+		ensure => running,
+		require => Package["varnish"];
+	}
 }
