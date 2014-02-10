@@ -13,6 +13,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "vagrant-centos-x64-6.5"
   
   config.ssh.username="root"
+  
+  config.vm.provision :puppet do |puppet| 
+    puppet.manifests_path = "provision/manifests" 
+    puppet.module_path = "provision/modules" 
+    puppet.manifest_file = "default.pp" 
+  end  
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -116,11 +122,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   puppet.manifest_file  = "site.pp"
   # end
   
-  config.vm.provision :puppet do |puppet| 
-    puppet.manifests_path = "provision/manifests" 
-    puppet.module_path = "provision/modules" 
-    puppet.manifest_file = "default.pp" 
-  end
+
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
