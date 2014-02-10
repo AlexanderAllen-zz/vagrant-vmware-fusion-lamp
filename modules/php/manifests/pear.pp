@@ -81,6 +81,7 @@ class php::pear {
   }
   
   # install phpcpd
+  /* Disable phpcd for now.
   exec {"pear install phpcpd":
     command => "/usr/bin/pear install --alldeps pear.phpunit.de/phpcpd",
     creates => '/usr/bin/phpcpd',
@@ -94,6 +95,7 @@ class php::pear {
 		Exec['pear install fDOMDocument']
 	]	
   }
+  */
   
   # install phpdcd
   exec {"pear install phpdcd":
