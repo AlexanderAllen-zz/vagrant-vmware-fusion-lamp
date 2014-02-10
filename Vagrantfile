@@ -2,9 +2,7 @@
 # vi: set ft=ruby :
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
-VAGRANTFILE_API_VERSION = "2"
-
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+Vagrant.configure("2") do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
@@ -13,12 +11,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "vagrant-centos-x64-6.5"
   
   config.ssh.username="root"
-  
-  config.vm.provision :puppet do |puppet| 
-    puppet.manifests_path = "provision/manifests" 
-    puppet.module_path = "provision/modules" 
-    puppet.manifest_file = "default.pp" 
-  end  
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -122,7 +114,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   puppet.manifest_file  = "site.pp"
   # end
   
-
+  # puppet.manifests_path = ["vm", "/path/to/manifests"]
+  
+  config.vm.provision :puppet do |puppet| 
+    #puppet.module_path => File.expand_path("../modules", __FILE__)
+    puppet.module_path = File.expand_path("../provision/modules", __FILE__)
+    #puppet.manifests_path = ["vm", "/etc/puppet/manifests"]
+    puppet.manifests_path = File.expand_path("../provision/manifests", __FILE__)
+    #puppet.module_path = ["vm", "/etc/puppet/modules"]
+    puppet.manifest_file = "default.pp"
+    puppet.options = "--verbose --debug"
+  end
+  
+#  config.vm.provision :puppet do |puppet| 
+  #  puppet.manifests_path = ["vm", "provision/manifests"]
+ #   puppet.module_path = ["vm", "provision/modules"]
+  #  puppet.manifest_file = ["vm", "default.pp"]
+   # puppet.options = "--verbose --debug"
+#  end  
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
