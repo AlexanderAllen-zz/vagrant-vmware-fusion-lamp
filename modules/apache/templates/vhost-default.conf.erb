@@ -19,8 +19,8 @@
     Order allow,deny
     allow from all
   </Directory>
-  ErrorLog <%= @logdir %>/<%= name %>_error.log
+  ErrorLog <%= @logdir %>/<%= @name %>_error.log
   LogLevel warn
-  CustomLog <%= @logdir %>/<%= name %>_access.log combined
+  CustomLog <%= @logdir %>/<%= @name %>_access.log combined
   ServerSignature Off
 </VirtualHost>
