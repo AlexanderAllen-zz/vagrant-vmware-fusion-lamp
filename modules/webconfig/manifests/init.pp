@@ -1,4 +1,4 @@
-class apache {
+class webconfig {
 	
 	package { "httpd":
 		ensure => present
