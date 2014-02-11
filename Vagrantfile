@@ -108,7 +108,7 @@ Vagrant.configure("2") do |config|
 
   
   # Install basic Puppet modules before provisioning Puppet.
-  #config.vm.provision :shell, :path => File.expand_path("../provision/bootstrap.sh", __FILE__)
+  config.vm.provision :shell, :path => File.expand_path("../provision/install-puppet-modules.sh", __FILE__)
   
   config.vm.synced_folder "~/Sites", "/root/Sites"
   
