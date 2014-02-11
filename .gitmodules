@@ -1,0 +1,3 @@
+[submodule "modules/puppetlabs-apache"]
+	path = modules/puppetlabs-apache
+	url = https://github.com/puppetlabs/puppetlabs-apache.git
