@@ -14,6 +14,7 @@ file { '/tmp/vagrant-puppet-semaphore':
 include apache
 include php
 include php::pear
+include php::drush
 include mysql
 include memcached
 include varnish
