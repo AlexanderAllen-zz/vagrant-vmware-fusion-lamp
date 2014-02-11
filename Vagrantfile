@@ -40,13 +40,11 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
-  #config.vm.synced_folder "~/Sites", "~/Sites"
   
   #
   # Enable the network interface by default without using Network Manager.
   # http://wiki.centos.org/FAQ/CentOS6#head-b67e85d98f0e9f1b599358105c551632c6ff7c90
   #
-  #config.vm.provision :shell, :inline => "cd /etc/sysconfig/network-scripts/; \
   #sed -i -e 's@^ONBOOT="no@ONBOOT="yes@' ifcfg-eth0"    
   
   # Run yum update and setup network configuration before running
@@ -115,6 +113,11 @@ Vagrant.configure("2") do |config|
   # end
   
   # puppet.manifests_path = ["vm", "/path/to/manifests"]
+  
+  # Install basic Puppet modules before provisioning Puppet.
+  #config.vm.provision :shell, :path => File.expand_path("../provision/bootstrap.sh", __FILE__)
+  
+  config.vm.synced_folder "~/Sites", "/root/Sites"
   
   config.vm.provision :puppet do |puppet| 
     #puppet.module_path => File.expand_path("../modules", __FILE__)
