@@ -7,8 +7,6 @@ Vagrant LAMP box for VMWare Fusion provisioner
 Instructions
 
 ```
-git checkout https://github.com/AlexanderAllen/vagrant-vmware-fusion-lamp.git vagrant-vmware-fusion-lamp
-git submodule init
-git submodule update
+git clone --recursive https://github.com/AlexanderAllen/vagrant-vmware-fusion-lamp.git foo
 vagrant up --provider vmware_fusion
 ```
