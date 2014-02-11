@@ -18,3 +18,15 @@ include php::drush
 include mysql
 include memcached
 include varnish
+
+# 1.0.1
+# Testing autoloading (no include)
+apache::vhost {'testhost':
+  port => 8080,
+  docroot => '/var/www-testhost',
+  priority => 25,
+  servername => 'puppet',
+}
+
+# 1.0.2
+# Create a new element for drush/drupal site that leverages apache::vhost inside.
