@@ -29,11 +29,11 @@ class php::pear {
 	#returns => [ 0, '', ' ']
   }
   
-  exec {"pecl uploadprogress":
-  	command => "/usr/bin/pecl install uploadprogress",
-	require => Exec['pear update-channels']
-	#returns => [ 0, '', ' ']
-  }  
+  #exec {"pecl uploadprogress":
+  # command => "/usr/bin/pecl install uploadprogress",
+  # require => Exec['pear update-channels']
+  # returns => [ 0, '', ' ']
+  #}  
   
   
   # Required by FinderFacade.
