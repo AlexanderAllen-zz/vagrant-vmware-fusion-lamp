@@ -1,0 +1,16 @@
+<?php
+
+# drupal/templates/alias-drushrc-php.erb
+
+# ****************************************************
+# Drush alias template in module AlexanderAllen-drupal
+# Managed by Puppet
+# ****************************************************
+
+$aliases['<%= @drushalias %>'] = array(
+  'uri' => '<%= @uri %>',
+  'root' => '<%= @drupalroot %>',
+  # todo interpret vars from hiera
+  # 'variables' => array('mail_system' => array('default-system' => 'DevelMailLog')),
+);
+
