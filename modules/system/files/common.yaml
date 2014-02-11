@@ -1,0 +1,9 @@
+---
+:backends: yaml
+:yaml:
+  :datadir: /var/lib/hiera
+:hierarchy:
+  # Common Drupal settings.
+  - drupal_common
+  - common
+:logger: console

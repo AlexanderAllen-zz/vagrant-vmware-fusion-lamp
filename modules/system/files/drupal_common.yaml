@@ -1,0 +1,4 @@
+---
+:drush_make:
+  -use "FALSE"
+  -default_make "FALSE"
