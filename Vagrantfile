@@ -49,7 +49,6 @@ Vagrant.configure("2") do |config|
   
   # Run yum update and setup network configuration before running
   # provider.
-  #config.vm.provision :shell, :inline => "yum update"
   
 
   #config.vm.provider :vmware_fusion do |v, override|
@@ -70,7 +69,7 @@ Vagrant.configure("2") do |config|
       #v.vmx["ethernet0.address"] = "00:0c:29:ac:f3:50"
       
      # v.vmx["displayName"] = "CentOS 6.5 LAMP"
-      #v.vmx["annotation"] = "CentOS minimal x86_64 v6.5 LAMP vagrant box by rallen"
+      #v.vmx["annotation"] = ""
   #end  
   
 
@@ -106,13 +105,7 @@ Vagrant.configure("2") do |config|
   # #   content => "Welcome to your Vagrant-built virtual machine!
   # #               Managed by Puppet.\n"
   # # }
-  #
-  # config.vm.provision :puppet do |puppet|
-  #   puppet.manifests_path = "manifests"
-  #   puppet.manifest_file  = "site.pp"
-  # end
-  
-  # puppet.manifests_path = ["vm", "/path/to/manifests"]
+
   
   # Install basic Puppet modules before provisioning Puppet.
   #config.vm.provision :shell, :path => File.expand_path("../provision/bootstrap.sh", __FILE__)
@@ -120,57 +113,10 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "~/Sites", "/root/Sites"
   
   config.vm.provision :puppet do |puppet| 
-    #puppet.module_path => File.expand_path("../modules", __FILE__)
     puppet.module_path = File.expand_path("../provision/modules", __FILE__)
-    #puppet.manifests_path = ["vm", "/etc/puppet/manifests"]
     puppet.manifests_path = File.expand_path("../provision/manifests", __FILE__)
-    #puppet.module_path = ["vm", "/etc/puppet/modules"]
     puppet.manifest_file = "default.pp"
     puppet.options = "--verbose --debug"
   end
-  
-#  config.vm.provision :puppet do |puppet| 
-  #  puppet.manifests_path = ["vm", "provision/manifests"]
- #   puppet.module_path = ["vm", "provision/modules"]
-  #  puppet.manifest_file = ["vm", "default.pp"]
-   # puppet.options = "--verbose --debug"
-#  end  
 
-  # Enable provisioning with chef solo, specifying a cookbooks path, roles
-  # path, and data_bags path (all relative to this Vagrantfile), and adding
-  # some recipes and/or roles.
-  #
-  # config.vm.provision :chef_solo do |chef|
-  #   chef.cookbooks_path = "../my-recipes/cookbooks"
-  #   chef.roles_path = "../my-recipes/roles"
-  #   chef.data_bags_path = "../my-recipes/data_bags"
-  #   chef.add_recipe "mysql"
-  #   chef.add_role "web"
-  #
-  #   # You may also specify custom JSON attributes:
-  #   chef.json = { :mysql_password => "foo" }
-  # end
-
-  # Enable provisioning with chef server, specifying the chef server URL,
-  # and the path to the validation key (relative to this Vagrantfile).
-  #
-  # The Opscode Platform uses HTTPS. Substitute your organization for
-  # ORGNAME in the URL and validation key.
-  #
-  # If you have your own Chef Server, use the appropriate URL, which may be
-  # HTTP instead of HTTPS depending on your configuration. Also change the
-  # validation key to validation.pem.
-  #
-  # config.vm.provision :chef_client do |chef|
-  #   chef.chef_server_url = "https://api.opscode.com/organizations/ORGNAME"
-  #   chef.validation_key_path = "ORGNAME-validator.pem"
-  # end
-  #
-  # If you're using the Opscode platform, your validator client is
-  # ORGNAME-validator, replacing ORGNAME with your organization name.
-  #
-  # If you have your own Chef Server, the default validation client name is
-  # chef-validator, unless you changed the configuration.
-  #
-  #   chef.validation_client_name = "ORGNAME-validator"
 end
