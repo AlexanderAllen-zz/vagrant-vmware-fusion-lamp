@@ -37,7 +37,7 @@ apache::vhost {'testhost':
 
 # Create a new element for drush/drupal site that leverages apache::vhost inside.
 # Test autoload #2 - 
-drupal::site {'test.local':
+#drupal::site {'test.local':
   # drush alias params, make cwd
   #docroot => '/var/www-testhost',
  # uri => 'default.local',
@@ -46,8 +46,26 @@ drupal::site {'test.local':
   # alternatively, it would be much easier if we just accepted an URL?
   # but URLs won't work for makefiles in private repos. For that reason, for now it's easier
   # just to create a shared dir, and let the user clone/download the make file there.
-  makefile => 'test.make',
+#  makefile => 'test.make',
   #drupalroot => 'lolololo',
+#}
+
+# Creates a reference.local folder using a reference.make file found in the webroot.
+# Drush is automatically created to @reference.local.
+# VHost file is reference.local
+drupal::site {
+  'reference.local':
+    # Changing makefile and webroot to be user-defined (no assumptions).
+    # 1.0.3 should support URL + branches/tags as well.
+    makefile => '/root/Sites/reference.make',
+    
+    docroot => '/root/Sites/reference.local',
+    
+    
+   # drushaliases => '', # must be an array
+    
+   # nested => true, # not supported atm
+   # nestedfolder => 'htdocs', # not supported atm
 }
 
 

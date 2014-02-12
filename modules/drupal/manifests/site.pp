@@ -63,7 +63,8 @@ define drupal::site(
     $drushalias         = "$title",
     $drupalroot         = "$title",
     $drushaliastemplate = 'drupal/alias-drushrc-php.erb',
-    $drushaliasdir      = "/root/.drush"
+    $drushaliasdir      = "/root/.drush",
+    $docroot            = "/var/www/${title}",
   ) {
 
   include drupal
@@ -72,21 +73,21 @@ define drupal::site(
   # All makefile parameters are relative to the shared Sites directory.
   exec { 
     "drush make": 
-      command => "drush make /root/Sites/${makefile} /root/Sites/${drupalroot}",
-      creates => "/root/Sites/${drupalroot}",
+      command => "drush make ${makefile} ${docroot}",
+      creates => "$docroot",
   }
   
   # Create new VHost entry.
   apache::vhost { "${uri}":
     port => 8080,
-    docroot => "/root/Sites/${drupalroot}",
+    docroot => "${docroot}",
     priority => 25,
     servername => $uri,
   }    
   
   # Create drush alias for site.
   file {
-    "${$drushaliasdir}/${drushalias}.aliases.drushrc.php":
+    "${drushaliasdir}/${drushalias}.aliases.drushrc.php":
       content => template($drushaliastemplate),
       owner   => 'root',
       group   => 'root',
@@ -98,6 +99,10 @@ define drupal::site(
     "clear drush cache":
       command => 'drush cc drush',
   }
+  
+  # @TODO
+  # - Drupal install (db, user, etc) - optional.
+  # - Networking/hosts entry - we can use a template and make hosts fully managed.
   
   
   # file for drush alias, accept shortcuts
