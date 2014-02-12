@@ -8,9 +8,12 @@ class php {
 		'php-pear', 'php-pecl-apc',
 		'php-mysql', 'php-soap', 'php-xml', 'php-xmlrpc', 
 		'php-pecl-apc-devel', 'php-bcmath', 'php-mcrypt',
-		'php-imap', 'php-odbc', 'php-zts'
+		'php-imap', 'php-odbc', 'php-zts',
+    
+    # Drupal 7 requires mbstring for Unicode support.
+    # Drupal installation will not complete without this.
+    'php-mbstring',
 	]
-	# removed pecl from libraries, as it is included as part of php common
 	
 	package { $libraries:
 		ensure => present
