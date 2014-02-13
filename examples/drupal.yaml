@@ -1,0 +1,31 @@
+---
+# Default VHost
+uri: localhost 
+
+# Using the default settings, instantiate a new site
+# for each one of these URIs.
+drupal_sites:
+  reference.local
+  foo.local
+  bar.local
+
+# Default docroot location
+# This is where your vhosts will be located at.
+drupal_docroot: /mnt/hgfs/-root-Sites
+
+# Database parameters
+drupal_dbuser: root
+drupal_dbpass: root
+drupal_dbhost: dev-allenr-x13.ieo.timeinc.com
+drupal_dbport: 3306
+drupal_dbname: reference
+
+
+# Default makefile, used for all hosts unless overriden.
+drupal_makefile: /mnt/hgfs/-root-Sites/reference.make
+
+# Drupal install parameters
+drupal_admin_user: admin
+drupal_admin_pass: admin
+drupal_admin_mail: admin@example.com
+drupal_site_name: Vagrant Drupal Site-Install
