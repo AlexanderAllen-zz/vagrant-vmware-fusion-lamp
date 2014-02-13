@@ -55,34 +55,57 @@
 # Drush takes care of actually creating the Drupal site (at least the schema)
 # Puppet takes care of creating the vhost container, alias, and any other manual task.
 
-
+# Making docroot use facts 
+# old: $docroot            = "/var/www/${title}",
+# deprecate: 
+# $drupalroot         = "${title}",
 
 define drupal::site(
+
+    $docroot            = undef,
+
     $makefile           = "${title}.make",
-    $uri                = "$title",
-    $drushalias         = "$title",
-    $drupalroot         = "$title",
+    $uri                = "${title}",
+    $drushalias         = "${title}",
+    
     $drushaliastemplate = 'drupal/alias-drushrc-php.erb',
     $drushaliasdir      = "/root/.drush",
-    $docroot            = "/var/www/${title}",
+    
+    $mirror             = false,
   ) {
 
   include drupal
+  
+  if $docroot == undef {
+    # Use global variable from Hiera.
+    $docroot = hiera('drupal_docroot')
+  }
+  
+  
 
   # Create site using make file.
-  # All makefile parameters are relative to the shared Sites directory.
-  exec { 
-    "drush make": 
-      command => "drush make ${makefile} ${docroot}",
-      creates => "$docroot",
+  # Mirror sites have unique databaes pointing to the same codebase.
+  if $mirror == false {
+    exec { 
+      "drush make ${uri}": 
+        command => "drush make ${makefile} ${docroot}/${uri}",
+        creates => "${docroot}",
+    }
+    
+    # KV The key is in the form [form name].[parameter name] on D7
+    exec {
+      "drush site-install ${uri}":
+        command => "drush site-install standard --db-url=mysql://${drupal_dbuser}:${drupal_dbpass}@${drupal_dbhost}:${drupal_dbport}/${drupal_dbname} --account-name=${drupal_admin_user} --account-pass=${drupal_admin_pass} --site-mail=${drupal_admin_mail} --account-mail=${drupal_admin_mail} --site-name=${drupal_site_name} install_configure_form.update_status_module='array(FALSE,FALSE)'",
+    }
   }
+  # @TODO else { # clone database and proceed with new vhost and drush alias }
   
   # Create new VHost entry.
   apache::vhost { "${uri}":
     port => 8080,
-    docroot => "${docroot}",
+    docroot => "${docroot}/${uri}",
     priority => 25,
-    servername => $uri,
+    servername => "${uri}",
   }    
   
   # Create drush alias for site.
@@ -100,6 +123,18 @@ define drupal::site(
       command => 'drush cc drush',
   }
   
+  # Networking
+  # A more robust example would be using a "managed" template, but it would eventually
+  # require adding support for existing "non-managed" hosts.
+  exec {
+    "Modify /etc/hosts entries for ${uri}":
+      
+      # Do not add if there is already an entry.
+      unless => 'grep -Fc '${uri}' /etc/hosts',    
+      command => "sed -i '1s/^/127.0.0.1  ${uri}\n\n/' /etc/hosts",
+  }  
+  
+  
   # @TODO
   # - Drupal install (db, user, etc) - optional.
   # - Networking/hosts entry - we can use a template and make hosts fully managed,
@@ -108,7 +143,6 @@ define drupal::site(
   # - I'd be awesome if (optionally, default off), we could manage the host's host file using the same approach.
   
   
-  # file for drush alias, accept shortcuts
 
   /*
   
@@ -121,15 +155,5 @@ define drupal::site(
                                     $logdir = '/var/log/apache2'}
   }
   
-  file {
-    "${vdir}/${priority}-${name}.conf":
-      content => template($template),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '755',
-      require => Package['httpd'],
-      notify  => Service['httpd'],
-  }
-  */
 
 }

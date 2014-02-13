@@ -9,8 +9,9 @@
 
 $aliases['<%= @drushalias %>'] = array(
   'uri' => '<%= @uri %>',
-  'root' => '<%= @docroot %>',
-  # todo interpret vars from hiera
+  'root' => '<%= @docroot} %>/<%= @uri} %>',
+  
+  // Puppet/Hiera-managed variables.
   # 'variables' => array('mail_system' => array('default-system' => 'DevelMailLog')),
 );
 

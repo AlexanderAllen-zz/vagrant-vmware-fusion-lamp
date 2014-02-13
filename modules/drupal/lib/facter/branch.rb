@@ -1,6 +1,7 @@
 require 'facter'
 
-
-Facter.add("uri") { 
-  setcode { '12345 lulz' } 
-}
+Facter.add(:branch) do
+  setcode do
+    Facter::Util::Resolution.exec("cat /etc/system_role")
+  end
+end
