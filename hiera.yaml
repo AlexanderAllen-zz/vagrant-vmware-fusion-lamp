@@ -5,8 +5,12 @@
 :logger: console
 
 :hierarchy:
-  - developer.yaml
-  - common.yaml
+  - %{uri}/${branch}/%{user} # same feature, different developers with divergent configuration
+  - %{uri}/${branch}/%{calling_module} # feature development
+  - %{uri}/%{calling_module} # common, standarized, development state
+  - %{fqdn} # Same codebase, but different virtual machines (say, how would PHP 5.5 break my RHEL LAMP box), these are VM-specific changes.
+  - %{calling_module} # used by all local sites, regardless of their state (host, branch, etc)
+  - common # For all things non-Drupal
 
 :yaml:
    :datadir: /etc/puppet/hieradata

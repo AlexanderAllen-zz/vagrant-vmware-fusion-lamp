@@ -129,7 +129,7 @@ Vagrant.configure("2") do |config|
     #"vagrant_hostname" => ENV['HOSTNAME'],
     #puppet.facter = { "proxy" => "proxy.host:80" }
     
-    puppet.facter["alex_test"] = "yes"
+    #puppet.facter["alex_test"] = "yes"
     
    # puppet.facter = { 
     #  "vagrant_test" => "Facts WORK!!!", 
@@ -138,7 +138,7 @@ Vagrant.configure("2") do |config|
    # }
    
    
-    #puppet.hiera_config_path = File.expand_path("../provision/hiera.yaml", __FILE__)
+    puppet.hiera_config_path = File.expand_path("../provision/hiera.yaml", __FILE__)
     #puppet.working_directory = "~/.hiera"   
     
     # Hiera configuration.
