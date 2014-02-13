@@ -76,6 +76,8 @@ define drupal::site(
 
   include drupal
   
+  notice("TEST NOTICE drupal_admin_user ${drupal_admin_user}")
+  
   if $docroot == undef {
     # Use global variable from Hiera.
     $docroot = hiera('drupal_docroot')
@@ -121,38 +123,6 @@ define drupal::site(
   exec {
     "clear drush cache":
       command => 'drush cc drush',
-  }
-  
-  # Networking
-  # A more robust example would be using a "managed" template, but it would eventually
-  # require adding support for existing "non-managed" hosts.
-  exec {
-    "Modify /etc/hosts entries for ${uri}":
-      
-      # Do not add if there is already an entry.
-      unless => 'grep -Fc '${uri}' /etc/hosts',    
-      command => "sed -i '1s/^/127.0.0.1  ${uri}\n\n/' /etc/hosts",
-  }  
-  
-  
-  # @TODO
-  # - Drupal install (db, user, etc) - optional.
-  # - Networking/hosts entry - we can use a template and make hosts fully managed,
-  #   or we can grep for an entry and if not found add it, if found update it.
-  #   we should also make a backup of /etc/hosts before updating it.
-  # - I'd be awesome if (optionally, default off), we could manage the host's host file using the same approach.
-  
-  
-
-  /*
-  
-  case $operatingsystem {
-    'centos', 'redhat', 'fedora': { $vdir   = '/etc/httpd/vhosts.d'
-                                    $logdir = '/var/log/httpd'}
-    'ubuntu', 'debian':           { $vdir   = '/etc/apache2/sites-enabled'
-                                    $logdir = '/var/log/apache2'}
-    default:                      { $vdir   = '/etc/httpd/conf.d'
-                                    $logdir = '/var/log/apache2'}
   }
   
 

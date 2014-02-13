@@ -2,12 +2,12 @@
 # Default VHost
 uri: localhost 
 
-# Using the default settings, instantiate a new site
-# for each one of these URIs.
-drupal_sites:
-  reference.local
-  foo.local
-  bar.local
+# Global settings hash.
+drupal:
+  sites:
+    - reference.local
+    - foo.local
+    - bar.local
 
 # Default docroot location
 # This is where your vhosts will be located at.
