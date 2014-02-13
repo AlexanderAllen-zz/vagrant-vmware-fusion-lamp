@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
 
   # If true, then any SSH connections made will enable agent forwarding.
   # Default value: false
-  # config.ssh.forward_agent = true
+  config.ssh.forward_agent = true
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -106,17 +106,49 @@ Vagrant.configure("2") do |config|
   # #               Managed by Puppet.\n"
   # # }
 
+  # some.config.val = ENV['MYVAR'] || '123'
   
   # Install basic Puppet modules before provisioning Puppet.
   config.vm.provision :shell, :path => File.expand_path("../provision/install-puppet-modules.sh", __FILE__)
   
   config.vm.synced_folder "~/Sites", "/root/Sites"
   
+  # Mount user hiera data on shared location.
+  #config.vm.synced_folder "~/.hiera/.__hiera", "/etc/puppet/hieradata"
+  
+  hostname = ENV['HOSTNAME'];
+  
+  
   config.vm.provision :puppet do |puppet| 
     puppet.module_path = File.expand_path("../provision/modules", __FILE__)
     puppet.manifests_path = File.expand_path("../provision/manifests", __FILE__)
     puppet.manifest_file = "default.pp"
     puppet.options = "--verbose --debug"
+    
+    # Configure custom Facts.
+    #"vagrant_hostname" => ENV['HOSTNAME'],
+    #puppet.facter = { "proxy" => "proxy.host:80" }
+    
+    puppet.facter["alex_test"] = "yes"
+    
+   # puppet.facter = { 
+    #  "vagrant_test" => "Facts WORK!!!", 
+      #"vagrant_hostname" => ENV['HOSTNAME'], 
+      #"vagrant_hostname2" => hostname 
+   # }
+   
+   
+    #puppet.hiera_config_path = File.expand_path("../provision/hiera.yaml", __FILE__)
+    #puppet.working_directory = "~/.hiera"   
+    
+    # Hiera configuration.
+    # hiera_config_path specifies the path to the Hiera configuration file stored on the host.
+    # hiera_config_path can be relative or absolute. If it is relative, it is relative to the project root.
+    #puppet.hiera_config_path = "hiera.yaml"
+    
+    # If the :datadir setting in the Hiera configuration file is a relative path,
+    # working_directory should be used to specify the directory in the guest that path is relative to.
+    #puppet.working_directory = "/tmp/vagrant-puppet"    
   end
 
 end

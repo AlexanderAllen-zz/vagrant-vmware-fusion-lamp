@@ -28,10 +28,10 @@ class apache {
 
   # Comment out deafult Listen directive on /etc/httpd/conf/httpd.conf.
   # sed -ir 's/^Listen\s80/#Listen 80/g'
-  exec { 'Update /etc/httpd/conf/httpd.conf':
-  command => "sed -ir 's/^Listen\s80/#Listen 80/g'",
-  require => Package["httpd"]
-  }
+  #exec { 'Update /etc/httpd/conf/httpd.conf':
+  #command => "sed -ir 's/^Listen\s80/#Listen 80/g'",
+  #require => Package["httpd"]
+ # }
 
   # Ensure httpd is running.
   service {

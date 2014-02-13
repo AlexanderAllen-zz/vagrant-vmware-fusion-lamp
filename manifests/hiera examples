@@ -1,0 +1,143 @@
+# Straight
+:hierarchy: - %{uri}
+            - common
+            
+            allyou.com.yaml
+            timeforkids.com.yaml
+            reference.local.yaml
+            common.yaml
+            
+# With Flair            
+:hierarchy: - %{uri}/${branch}
+            - common
+            
+            allyou.com/
+                master.yaml #(stable code)
+                feature-branch-1.yaml #(my awesome drupal feature)
+                feature-branch-2.yaml #(godzilla feature)
+            timeforkids.com/
+                master.yaml
+            reference.local
+                master.yaml
+            common.yaml    
+            
+# With Flair no.2
+# Typically only one LAMP host per developer,
+# always with multiple sites
+# with variations of those sites when testing things such as migration and features
+#
+# Calling module:
+#   - Provides flexibility (multiple YAML/Hiera providers)
+#   - Prevents naming conflicts in the typical enterprise, multi-team environment.
+#   - YOUR Puppet module does not use the same schema (.yaml) as MY module;
+#   - But we all use a common Hiera structure and location.
+# URI: facilitates a different setting per site (database)
+#   - Different codebase from other sites
+#   - %{uri}/%{calling_module}
+# Branch: facilitates different variations of a site 
+#   - %{uri}/${branch}/%{calling_module}
+#   - Same codebase, same URI (http://timeforkids.com)
+#   - When we want to test a new "Feature" module.
+#     - Example: how do changes in a Feature affect the database, assuming the same
+#       codebase - with the exception of the changes on the Feature.
+        - Typically involves you "cloning" your apache virtual host
+        configuration, and:
+            - creating a brand new site (checkout same codebase, use different db in settings.php)
+            - OR, if you're lazy (like me) just copy the vhost config
+              - and point it to exactly the same docroot location
+              - but change the uri (example.local => example2.local),
+                - and create a new settings folder in your sites folder.
+        - Still involves manual "minion" work
+        - Very advanced for the most devs without devops or sysadmin skillz (ie, the majority)
+#   - Same codebase, but we want to have a database as a reference (before a migration),
+#     and after the migration.
+# Username:
+    - Our team manages three Drupal sites
+    - We want to develop against the same codebase, and;
+    - We also want to standarize the Drupal configuration for each one of them.    
+    - But sometimes I want to enable this module or modify that variable;
+    - And creating a new branch in Git (remote or local) sounds like too much work, or:
+      (ie, Git branches are typically used for new features)
+      - Example: Two developers are working on the same feature branch (same ticket)
+        - You went home at 6pm, broke the build, I stayed until 6:01pm, and now I have to fix the build.
+        - I might want to use the same settings.php or Feature/Context/Views/Content Type changes that
+          are in your branch/Jira ticket, but with some minor "tweaks" ;)
+:hierarchy: 
+            - %{uri}/${branch}/%{user} # same feature, different developers with divergent configuration
+            - %{uri}/${branch}/%{calling_module} # feature development
+            - %{uri}/%{calling_module} # common, standarized, development state
+            - %{uuid} # Same codebase, but different virtual machines (say, how would PHP 5.5 break my RHEL LAMP box), these are VM-specific changes.
+            - %{calling_module} # used by all local sites, regardless of their state (host, branch, etc)
+            - common # For all things non-Drupal
+            
+            564DED48-C0CC-47A9-200D-DB61830BBD1F  # We updated PHP 5.3 => 5.4, some PHP modules, and other system modules.
+                                                  # Update failed, site broke, try to figure out in less than 10 minutes what broke it.
+                                                  # Break the updates into three separate VMs, one for PHP core, PHP modules, and system modules each.
+                                                  # Fire up Jenkins/Selenium and go grab a coffee.
+                                                  # ...
+                                                  # Profit!
+                                                  # Bonus: it also works between different hypervisor products and vendors.
+                                                  # Test migration from VMWare Fusion 5.5 to 5.6, or from VMWare to VBox,
+                                                  # or from VBox to the EC2 cloud...
+                                                  #
+                                                  # Value example of using Vagrant versus MAMP :
+                                                  # - Have you ever tried to test upgrade of PHP point releases (5.3.x) in MAMP?
+                                                  # - long answer - it would take days...
+                                                  # - short answer - jump off a cliff...
+                                                  # And that's if you're lucky and MAMP DOES actually release that point update.
+                                                  #   - Most of the time, they don't...
+            
+            local.allyou.com/
+              current-release-branch/drupal.yaml # Current release branch. Use as a local reference.
+              new-release-branch/drupal.yaml # Contains multiple modules and settings from multiple developers.
+                                             # This is the default local site used for development.
+                                             # Everyone can share the same development state.
+              feature-branch-shared-ticket-123/drupal.yaml # 
+                                             # New feature branch state.
+                                             # I want to constantly check in my state changes, 
+                                             # without breaking everyone's local development (or reference) instance,
+                                             # Promote configuration changes to new release (dev) branch when "ready".
+                                             # "Finished" work on Ticket 123, checked-in, left office.
+              feature-branch-shared-ticket-123/sergei.yaml
+                                             # rallen left office at 6:00pm, and checked-in his code
+                                             # at 6:01pm sergei checks out rallen's code, and the computer explodes
+                                             # sergei is working on the same module (or a submodule)
+                                             # needs to work with rallens code, but wants to find out what is breaking
+                                             # scenario: works for me, works for him, but doesn't work when we merge 
+            
+            
+            local.realsimple.com/
+              # hierarchy level no.5
+              master/sergei.yaml
+              feature-branch-1/rallen.yaml
+              feature-branch-2/steve.yaml
+                          
+              # hierarchy level no.4
+              master/drupal.yaml
+              feature-branch-1/drupal.yaml
+              feature-branch-2/drupal.yaml
+
+            local.allyou.com/
+              # hierarchy level no.4
+              master/drupal.yaml
+              feature-branch-1/drupal.yaml
+              feature-branch-2/drupal.yaml
+              
+              # hierarchy level no.3
+              drupal.yaml # Can act as a default for uri.
+              
+            # hierarchy level no.3
+            local.timeforkids.com/
+              drupal.yaml
+            reference.local/
+              drupal.yaml
+            
+            # hierarchy no.2
+            drupal.yaml # Act as a global default for all Drupal applications.
+            common.yaml                  
+            
+# INFO            
+Default location for :hieradata will be /etc/puppet/hieradata.
+For example /etc/puppet/hieradata/common.yaml.
+From there we put a symlink to a webroot, so now developers
+can attach 

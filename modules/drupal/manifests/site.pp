@@ -102,7 +102,10 @@ define drupal::site(
   
   # @TODO
   # - Drupal install (db, user, etc) - optional.
-  # - Networking/hosts entry - we can use a template and make hosts fully managed.
+  # - Networking/hosts entry - we can use a template and make hosts fully managed,
+  #   or we can grep for an entry and if not found add it, if found update it.
+  #   we should also make a backup of /etc/hosts before updating it.
+  # - I'd be awesome if (optionally, default off), we could manage the host's host file using the same approach.
   
   
   # file for drush alias, accept shortcuts

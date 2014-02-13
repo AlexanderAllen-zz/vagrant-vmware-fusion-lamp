@@ -68,6 +68,17 @@ drupal::site {
    # nestedfolder => 'htdocs', # not supported atm
 }
 
+ #Drupal 6 style database URL
+#--db-url=mysql://root:pass@localhost:port/dbname
+
+
+
+notify{"The value is: ${proxy}": }
+
+
+notice("TEST NOTICES ${proxy}")
+#notice("Test host_facts foo: ${host_foo}");
+#notice("Test host_facts vagrant_hostname: ${vagrant_hostname}");
 
 
 
