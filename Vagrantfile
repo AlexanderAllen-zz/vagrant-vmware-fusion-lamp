@@ -114,7 +114,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "~/Sites", "/root/Sites"
   
   # Mount user hiera data on shared location.
-  #config.vm.synced_folder "~/.hiera/.__hiera", "/etc/puppet/hieradata"
+  config.vm.synced_folder "~/.vagrant.d/.hiera", "/etc/puppet/hieradata"
   
   hostname = ENV['HOSTNAME'];
   
